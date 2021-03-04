@@ -28,6 +28,7 @@ typedef struct {
 
 class LedMatrix {
     public:
+    	LedMatrix(int dataIn, int load, int clock);
         LedMatrix(int dataIn, int load, int clock, int maxInUse);
         void maxSingle(byte reg, byte col);
         void maxAll(byte reg, byte col);
@@ -40,10 +41,8 @@ class LedMatrix {
         Pins pins;
         int maxInUse;
         void putByte(byte data);
+        int binaryToDecimal(int binaryNumber);
 };
-
-
-int binaryToDecimal(int binaryNumber);
 
 
 #endif

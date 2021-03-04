@@ -2,24 +2,14 @@
 #include <math.h>
 
 
-int binaryToDecimal(int binaryNumber) {
-    int aux = binaryNumber;
-    int binaryNumberLen = 0;
-    int decimalNumber = 0;
+LedMatrix::LedMatrix(int dataIn, int load, int clock) {
+	this->pins = {
+        .dataIn = dataIn,
+        .load = load,
+        .clock = clock
+    };
 
-    while (aux != 0) {
-        binaryNumberLen++;
-        aux /= 10;
-    }
-
-    aux = binaryNumber;
-
-    for (int i = 0; i < binaryNumberLen; i++) {
-        decimalNumber += (aux % 10) * pow(2, i);
-        aux /= 10;
-    }
-
-    return (int)decimalNumber;
+    this->maxInUse = 1;
 }
 
 
@@ -49,6 +39,27 @@ void LedMatrix::putByte(byte data) {
 
         digitalWrite(this->pins.clock, HIGH);
     }
+}
+
+
+int LedMatrix::binaryToDecimal(int binaryNumber) {
+    int aux = binaryNumber;
+    int binaryNumberLen = 0;
+    int decimalNumber = 0;
+
+    while (aux != 0) {
+        binaryNumberLen++;
+        aux /= 10;
+    }
+
+    aux = binaryNumber;
+
+    for (int i = 0; i < binaryNumberLen; i++) {
+        decimalNumber += (aux % 10) * pow(2, i);
+        aux /= 10;
+    }
+
+    return decimalNumber;
 }
 
 
@@ -110,7 +121,7 @@ void LedMatrix::drawMatrix(byte pointMatrix[8][8]) {
         for (int j = 0; j < 8; j++) {
             str += String(pointMatrix[i][j]);
         }
-        converted_str = binaryToDecimal(str.toInt());
+        converted_str = this->binaryToDecimal(str.toInt());
         str = "";
         this->maxSingle(i + 1, converted_str);
     }
